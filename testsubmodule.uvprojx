@@ -7096,6 +7096,16 @@
               <FileType>8</FileType>
               <FilePath>.\threadANALOG.cpp</FilePath>
             </File>
+            <File>
+              <FileName>ColorSensor.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\ColorSensor.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ColorSensor.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ColorSensor.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
