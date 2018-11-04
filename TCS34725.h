@@ -14,6 +14,7 @@ typedef struct{
 	int acc_red;
 	int acc_green;
 	int acc_blue;
+	int dominant;
 }ColorData;
 
 class TCS34725 {
@@ -40,6 +41,7 @@ private:
   int m_addr;
 	DigitalOut LED;
 	ColorData color;
+	void dominantColor();
 } ;
 
 #endif /* _TCS34725_H_ */

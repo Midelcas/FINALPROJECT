@@ -2,9 +2,8 @@
 #include "rtos.h"
 #include "TCS34725.h"
 #include "MMA8451Q.h"
-#define RED		3
-#define BLUE	6
-#define GREEN	5
+#include "Si7021.h"
+
 
 void setLed();	
 
@@ -24,8 +23,7 @@ extern float valueSM;
 
 extern ColorData colorData;
 extern AccelerometerData accData;
-//extern AccelerometerData accelerometer;
-//extern AmbientData ambient;
+extern AmbientData ambData;
 
 
 
@@ -41,30 +39,16 @@ int main() {
 	
     while (true) {
 
-			  pc.printf("\n\r");
-			
-				// SOIL MOISTURE
-			  //pc.printf("\n\rSOIL MOISTURE: %.1f%%",valueSM);
-				pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
-				pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
-									colorData.green_value, colorData.blue_value);
-				setLed();
-        wait(1);
+			pc.printf("\n\r");
+		
+			// SOIL MOISTURE
+			//pc.printf("\n\rSOIL MOISTURE: %.1f%%",valueSM);
+			pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
+			pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
+			pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
+								colorData.green_value, colorData.blue_value);
+			leds = colorData.dominant;
+			wait(1);
 			
     }
 }
-
-void setLed(){
-	if(colorData.red_value>colorData.green_value){
-		if(colorData.red_value>colorData.blue_value){
-			leds=RED;
-		}else{
-			leds=BLUE;
-		}
-	}else if(colorData.green_value>colorData.blue_value){
-		leds=GREEN;
-	}else{
-		leds=BLUE;
-	}
-}
-

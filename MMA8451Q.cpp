@@ -61,7 +61,7 @@
 #define BIT_TRIG_LNDPRT      0x10  // Landscape/Portrati Orientation
 #define BIT_TRIG_PULSE       0x08  // Pulse interrupt trigger bit
 #define BIT_TRIG_FF_MT       0x04  // Freefall/Motion trigger bit
-#define UINT14_MAX        16383
+#define UINT14_MAX					 16383
 #define DEFAULT 						 100
 
 MMA8451Q::MMA8451Q(PinName sda, PinName scl, int addr) : m_i2c(sda, scl), m_addr(addr<<1) {

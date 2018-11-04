@@ -25,6 +25,9 @@
 #define BDATAL 			0X1A
 #define BDATAH 			0X1B
 #define TCS34725ID 	0x44
+#define RED		3
+#define BLUE	6
+#define GREEN	5
 
 
 
@@ -69,5 +72,24 @@ ColorData TCS34725::readRegisters(void){
 		color.red_value = ((int)color_data[3] << 8) | color_data[2];
 		color.green_value = ((int)color_data[5] <<8)| color_data[4];
 		color.blue_value = ((int)color_data[7] <<8) | color_data[6];
+		dominantColor();
 		return color;
+}
+
+void TCS34725::dominantColor(){
+	if(color.red_value>color.green_value){
+		if(color.red_value>color.blue_value){
+			color.acc_red++;
+			color.dominant=RED;
+		}else{
+			color.acc_blue++;
+			color.dominant=BLUE;
+		}
+	}else if(color.green_value>color.blue_value){
+		color.acc_green++;
+		color.dominant=GREEN;
+	}else{
+		color.acc_blue++;
+		color.dominant=BLUE;
+	}
 }
