@@ -1,6 +1,9 @@
 #include "mbed.h"
 #include "rtos.h"
-#include "I2CSensor.h"
+#include "TCS34725.h"
+#include "MMA8451Q.h"
+#include "Si7021.h"
+
 
 void setLed();	
 
@@ -18,9 +21,9 @@ extern void I2C_thread();
 
 extern float valueSM;
 
-extern ColorData color;
-extern AccelerometerData accelerometer;
-extern AmbientData ambient;
+extern ColorData colorData;
+extern AccelerometerData accData;
+extern AmbientData ambData;
 
 
 
@@ -36,29 +39,22 @@ int main() {
 	
     while (true) {
 
-			  pc.printf("\n\r");
-			
-				// SOIL MOISTURE
-			  //pc.printf("\n\rSOIL MOISTURE: %.1f%%",valueSM);
-				pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",color.clear_value, color.red_value, 
-									color.green_value, color.blue_value);
-				setLed();
-        wait(0.2);
+			pc.printf("\n\r");
+		
+			// SOIL MOISTURE
+			//pc.printf("\n\rSOIL MOISTURE: %.1f%%",valueSM);
+			pc.printf("\nMaxH: (%.2f%%),MinH: (%.2f%%)\n",ambData.maxHumidity, ambData.minHumidity);
+			pc.printf("\nMaxT: (%.2fºC),MinT: (%.2fºC)\n",ambData.maxTemperature, ambData.minTemperature);
+			pc.printf("\nMeanH: (%.2f%%),MeanT: (%.2fºC)\n",ambData.meanHumidity, ambData.meanTemperature);
+			pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
+			pc.printf("\nMaxX (%f),MaxY (%f),MaxZ (%f)\n",accData.x_Max, accData.y_Max, accData.z_Max);
+			pc.printf("\nMinX (%f),MinY (%f),MinZ (%f)\n",accData.x_Min, accData.y_Min, accData.z_Min);
+			pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
+			pc.printf("\nRedTimes (%d),GreenTimes (%d),BlueTimes (%d)\n",colorData.acc_red, colorData.acc_green, colorData.acc_blue);
+			pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
+								colorData.green_value, colorData.blue_value);
+			leds = colorData.dominant;
+			wait(1);
 			
     }
 }
-
-void setLed(){
-	if(color.red_value>color.green_value){
-		if(color.red_value>color.blue_value){
-			leds=RED;
-		}else{
-			leds=BLUE;
-		}
-	}else if(color.green_value>color.blue_value){
-		leds=GREEN;
-	}else{
-		leds=BLUE;
-	}
-}
-
