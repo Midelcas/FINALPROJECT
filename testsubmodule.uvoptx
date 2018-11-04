@@ -152,9 +152,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>28</LineNumber>
+          <LineNumber>39</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134239382</Address>
+          <Address>134240336</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -163,23 +163,55 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>.\I2CSensor.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\testsubmodule\I2CSensor.cpp\28</Expression>
+          <Expression>\\testsubmodule\I2CSensor.cpp\39</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>39</LineNumber>
+          <LineNumber>99</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
+          <Address>134244454</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\I2CSensor.cpp</Filename>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\Si7021.cpp</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\testsubmodule\Si7021.cpp\99</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>100</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134244470</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\Si7021.cpp</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\testsubmodule\Si7021.cpp\100</Expression>
+        </Bp>
+        <Bp>
+          <Number>3</Number>
+          <Type>0</Type>
+          <LineNumber>102</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134244482</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\Si7021.cpp</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\testsubmodule\Si7021.cpp\102</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -202,6 +234,11 @@
           <count>3</count>
           <WinNumber>1</WinNumber>
           <ItemText>((int)color_data[3] &lt;&lt; 8) | color_data[2],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>accHum</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

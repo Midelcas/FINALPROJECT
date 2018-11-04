@@ -32,6 +32,9 @@ Si7021::Si7021(PinName sda, PinName scl, int addr) : m_i2c(sda, scl){
 	ambData.maxTemperature=DEFAULT;	
 	ambData.minTemperature=DEFAULT;
 	ambData.meanTemperature=0;
+	accHum=0;
+	accTmp=0;
+	count=0;
 }
 
 Si7021::~Si7021() { }
@@ -96,7 +99,7 @@ void Si7021::addReg (float hum, float tmp){
 	if(ambData.humidity<ambData.minHumidity)
 		ambData.minHumidity=ambData.humidity;
 	
-	ambData.meanHumidity=accHum/count;
-	ambData.meanTemperature=accTmp/count;
+	ambData.meanHumidity=(float)accHum/count;
+	ambData.meanTemperature=(float)accTmp/count;
 	
 }

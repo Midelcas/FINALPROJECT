@@ -35,6 +35,13 @@ TCS34725::TCS34725(PinName sda, PinName scl, int addr, PinName led) : m_i2c(sda,
 	//m_i2c.frequency(100000);
 	m_addr=addr;
 	LED=0;
+	color.red_value=0;
+	color.green_value=0;
+	color.blue_value=0;
+	color.acc_red=0;
+	color.acc_green=0;
+	color.acc_blue=0;
+	color.dominant=0;
 }
 
 TCS34725::~TCS34725() { }

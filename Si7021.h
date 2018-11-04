@@ -42,7 +42,7 @@ private:
   uint8_t  rx_buff[8];
   uint8_t  tx_buff[2];
 	AmbientData ambData;
-	int count;
+	long count;
 	float accHum;
 	float accTmp;
 	void addReg (float hum, float tmp);

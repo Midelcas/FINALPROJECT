@@ -103,15 +103,15 @@ AccelerometerData MMA8451Q::getAccAllAxis(void) {
     accData.x = getAccX();
     accData.y = getAccY();
     accData.z = getAccZ();
-	if(accData.x==DEFAULT){
+	if(accData.x_Max==DEFAULT){
 		accData.x_Min=accData.x;
 		accData.x_Max=accData.x;
 	}
-	if(accData.y==DEFAULT){
+	if(accData.y_Max==DEFAULT){
 		accData.y_Min=accData.y;
 		accData.y_Max=accData.y;
 	}
-	if(accData.z==DEFAULT){
+	if(accData.z_Max==DEFAULT){
 		accData.z_Min=accData.z;
 		accData.z_Max=accData.z;
 	}
