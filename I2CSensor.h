@@ -5,7 +5,33 @@ typedef struct{
 	int red_value;
 	int green_value;
 	int blue_value;
+	int acc_red;
+	int acc_green;
+	int acc_blue;
 }ColorData;
+
+typedef struct{
+	float x;
+	float x_Max;
+	float x_Min;
+	float y;
+	float y_Max;
+	float y_Min;
+	float z;
+	float z_Max;
+	float z_Min;
+}AccelerometerData;
+
+typedef struct{
+	float humidity;
+	float maxHumidity;
+	float minHumidity;
+	float meanHumidity;
+	float temperature;
+	float maxTemperature;
+	float minTemperature;
+	float meanTemperature;
+}AmbientData;
 
 #define COMMAND 	0x80
 #define ENABLE 		0x00
@@ -29,3 +55,8 @@ typedef struct{
 #define BDATAL 		0X1A
 #define BDATAH 		0X1B
 #define TCS34725 	0x44
+
+#define RED		3
+#define BLUE	6
+#define GREEN	5
+

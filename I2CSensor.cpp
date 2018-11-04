@@ -1,7 +1,9 @@
 // Example program connecting to the TCS34725 Color Sensor to the K64F using I2C
 
 #include "mbed.h"
-#include "ColorSensor.h"
+#include "I2CSensor.h"
+
+
 
 int sensor_addr = 41 << 1;
 
@@ -11,6 +13,7 @@ extern Serial pc;
 
 
 ColorData color;
+
 
 Thread threadI2C(osPriorityNormal, 1024); // 1K stack size
 
@@ -31,8 +34,6 @@ void I2C_thread() {
 			wait(0.25);
     }
 }
-
-
 bool checkId(){
 	char id_regval[1] = {COMMAND|ID};//0x12 device ID
 	char data[1] = {0};//response buffer
@@ -55,7 +56,7 @@ void initColorSensor(){
 
 void readRegisters(){
 		Led = 1;
-		wait(0.1);
+		wait(0.2);
 		char color_reg[1]={COMMAND|CDATAL};
 		char color_data[8] = {0};
 		i2c.write(sensor_addr, color_reg, 1, true);

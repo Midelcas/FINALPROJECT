@@ -1,11 +1,12 @@
 #include "mbed.h"
 #include "rtos.h"
-#include "ColorSensor.h"
+#include "I2CSensor.h"
 
-	
+void setLed();	
 
 Serial pc(USBTX,USBRX,9600);
 
+BusOut leds(PH_0, PH_1, PB_13);
 
 //extern Thread threadANALOG;
 
@@ -18,6 +19,8 @@ extern void I2C_thread();
 extern float valueSM;
 
 extern ColorData color;
+extern AccelerometerData accelerometer;
+extern AmbientData ambient;
 
 
 
@@ -39,9 +42,23 @@ int main() {
 			  //pc.printf("\n\rSOIL MOISTURE: %.1f%%",valueSM);
 				pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",color.clear_value, color.red_value, 
 									color.green_value, color.blue_value);
-
-        wait(2);
+				setLed();
+        wait(0.2);
 			
     }
+}
+
+void setLed(){
+	if(color.red_value>color.green_value){
+		if(color.red_value>color.blue_value){
+			leds=RED;
+		}else{
+			leds=BLUE;
+		}
+	}else if(color.green_value>color.blue_value){
+		leds=GREEN;
+	}else{
+		leds=BLUE;
+	}
 }
 

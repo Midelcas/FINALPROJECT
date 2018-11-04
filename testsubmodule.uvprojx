@@ -7097,14 +7097,14 @@
               <FilePath>.\threadANALOG.cpp</FilePath>
             </File>
             <File>
-              <FileName>ColorSensor.cpp</FileName>
+              <FileName>I2CSensor.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\ColorSensor.cpp</FilePath>
+              <FilePath>.\I2CSensor.cpp</FilePath>
             </File>
             <File>
-              <FileName>ColorSensor.h</FileName>
+              <FileName>I2CSensor.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\ColorSensor.h</FilePath>
+              <FilePath>.\I2CSensor.h</FilePath>
             </File>
           </Files>
         </Group>
