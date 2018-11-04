@@ -1,6 +1,9 @@
 #include "mbed.h"
 #include "rtos.h"
-#include "I2CSensor.h"
+#include "TCS34725.h"
+#define RED		3
+#define BLUE	6
+#define GREEN	5
 
 void setLed();	
 
@@ -18,9 +21,9 @@ extern void I2C_thread();
 
 extern float valueSM;
 
-extern ColorData color;
-extern AccelerometerData accelerometer;
-extern AmbientData ambient;
+extern ColorData colorData;
+//extern AccelerometerData accelerometer;
+//extern AmbientData ambient;
 
 
 
@@ -40,8 +43,8 @@ int main() {
 			
 				// SOIL MOISTURE
 			  //pc.printf("\n\rSOIL MOISTURE: %.1f%%",valueSM);
-				pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",color.clear_value, color.red_value, 
-									color.green_value, color.blue_value);
+				pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
+									colorData.green_value, colorData.blue_value);
 				setLed();
         wait(0.2);
 			
@@ -49,13 +52,13 @@ int main() {
 }
 
 void setLed(){
-	if(color.red_value>color.green_value){
-		if(color.red_value>color.blue_value){
+	if(colorData.red_value>colorData.green_value){
+		if(colorData.red_value>colorData.blue_value){
 			leds=RED;
 		}else{
 			leds=BLUE;
 		}
-	}else if(color.green_value>color.blue_value){
+	}else if(colorData.green_value>colorData.blue_value){
 		leds=GREEN;
 	}else{
 		leds=BLUE;

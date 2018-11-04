@@ -7106,6 +7106,26 @@
               <FileType>5</FileType>
               <FilePath>.\I2CSensor.h</FilePath>
             </File>
+            <File>
+              <FileName>TCS34725.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\TCS34725.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>TCS34725.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\TCS34725.h</FilePath>
+            </File>
+            <File>
+              <FileName>MMA8451Q.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\MMA8451Q.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MMA8451Q.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\MMA8451Q.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
