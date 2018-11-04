@@ -1,6 +1,7 @@
 #include "mbed.h"
 #include "rtos.h"
 #include "TCS34725.h"
+#include "MMA8451Q.h"
 #define RED		3
 #define BLUE	6
 #define GREEN	5
@@ -22,6 +23,7 @@ extern void I2C_thread();
 extern float valueSM;
 
 extern ColorData colorData;
+extern AccelerometerData accData;
 //extern AccelerometerData accelerometer;
 //extern AmbientData ambient;
 
@@ -43,10 +45,11 @@ int main() {
 			
 				// SOIL MOISTURE
 			  //pc.printf("\n\rSOIL MOISTURE: %.1f%%",valueSM);
+				pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
 				pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
 									colorData.green_value, colorData.blue_value);
 				setLed();
-        wait(0.2);
+        wait(1);
 			
     }
 }

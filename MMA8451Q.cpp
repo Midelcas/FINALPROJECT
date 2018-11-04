@@ -66,6 +66,15 @@ MMA8451Q::MMA8451Q(PinName sda, PinName scl, int addr) : m_i2c(sda, scl), m_addr
     // activate the peripheral
     uint8_t data[2] = {REG_CTRL_REG1, 0x01};
     writeRegs(data, 2);
+		accData.x=0;
+		accData.y=0;
+		accData.z=0;
+		accData.x_Max=0;
+		accData.x_Min=0;
+		accData.y_Max=0;
+		accData.y_Min=0;
+		accData.z_Max=0;
+		accData.z_Min=0;
 }
 
 MMA8451Q::~MMA8451Q() { }
@@ -95,7 +104,7 @@ int16_t MMA8451Q::getRawX(void)
 {
     int16_t value ;
     value = getRawData(REG_OUT_X_MSB) ;
-		value  = (value <<8) + getRawData(REG_OUT_X_LSB);
+		//value  = (value <<8) + getRawData(REG_OUT_X_LSB);
     return( value ) ;
 }
 
@@ -103,7 +112,7 @@ int16_t MMA8451Q::getRawY(void)
 {
     int16_t value ;
 		value = getRawData(REG_OUT_Y_MSB) ;
-		value  = (value <<8) + getRawData(REG_OUT_Y_LSB);
+		//value  = (value <<8) + getRawData(REG_OUT_Y_LSB);
     return( value ) ;
 }
 
@@ -111,7 +120,7 @@ int16_t MMA8451Q::getRawZ(void)
 {
     int16_t value ;
     value = getRawData(REG_OUT_Z_MSB) ;
-		value  = (value <<8) + getRawData(REG_OUT_Z_LSB);
+		//value  = (value <<8) + getRawData(REG_OUT_Z_LSB);
     return( value ) ;
 }
   
@@ -128,6 +137,30 @@ float MMA8451Q::getAccY(void)
 float MMA8451Q::getAccZ(void) 
 {
     return(((float)getRawZ())/4096.0) ;
+}
+
+AccelerometerData MMA8451Q::getData(void){
+	int16_t value ;
+	uint8_t data[6] ;
+	readRegs(REG_OUT_X_MSB, data, 6) ;
+	accData.x = ((float)(((int16_t)((data[0] << 6) | data[1])) >> 2)/4096) ;
+	accData.y = ((float)(((int16_t)((data[2] << 6) | data[3])) >> 2)/4096) ;
+	accData.z = ((float)(((int16_t)((data[4] << 6) | data[5])) >> 2)/4096) ;
+	
+	if(accData.x>accData.x_Max)
+		accData.x_Max=accData.x;
+	if(accData.x<accData.x_Min)
+		accData.x_Min=accData.x;
+	if(accData.y>accData.y_Max)
+		accData.y_Max=accData.y;
+	if(accData.y<accData.y_Min)
+		accData.y_Min=accData.y;
+	if(accData.z>accData.z_Max)
+		accData.z_Max=accData.z;
+	if(accData.z<accData.z_Min)
+		accData.z_Min=accData.z;
+	
+		return accData;
 }
 
 void MMA8451Q::setSingleTap(void){

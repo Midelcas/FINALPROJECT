@@ -1,17 +1,4 @@
 
-
-typedef struct{
-	float x;
-	float x_Max;
-	float x_Min;
-	float y;
-	float y_Max;
-	float y_Min;
-	float z;
-	float z_Max;
-	float z_Min;
-}AccelerometerData;
-
 typedef struct{
 	float humidity;
 	float maxHumidity;

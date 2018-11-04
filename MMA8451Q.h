@@ -6,6 +6,18 @@
 
 #include "mbed.h"
 
+typedef struct{
+	float x;
+	float x_Max;
+	float x_Min;
+	float y;
+	float y_Max;
+	float y_Min;
+	float z;
+	float z_Max;
+	float z_Min;
+}AccelerometerData;
+
 class MMA8451Q {
 public:
   /**
@@ -31,12 +43,13 @@ public:
   float getAccY(void) ;
   float getAccZ(void) ;
   
-	
+	AccelerometerData getData(void);
 	void setSingleTap(void);
 	void setDobleTap(void);
 private:
   I2C m_i2c;
   int m_addr;
+	AccelerometerData accData;
 	void readRegs(int addr, uint8_t * data, int len);
   void writeRegs(uint8_t * data, int len);
 } ;
