@@ -61,91 +61,60 @@
 #define BIT_TRIG_LNDPRT      0x10  // Landscape/Portrati Orientation
 #define BIT_TRIG_PULSE       0x08  // Pulse interrupt trigger bit
 #define BIT_TRIG_FF_MT       0x04  // Freefall/Motion trigger bit
+#define UINT14_MAX        16383
+#define DEFAULT 						 100
 
 MMA8451Q::MMA8451Q(PinName sda, PinName scl, int addr) : m_i2c(sda, scl), m_addr(addr<<1) {
     // activate the peripheral
     uint8_t data[2] = {REG_CTRL_REG1, 0x01};
     writeRegs(data, 2);
-		accData.x=0;
-		accData.y=0;
-		accData.z=0;
-		accData.x_Max=0;
-		accData.x_Min=0;
-		accData.y_Max=0;
-		accData.y_Min=0;
-		accData.z_Max=0;
-		accData.z_Min=0;
+		accData.x=DEFAULT;
+		accData.y=DEFAULT;
+		accData.z=DEFAULT;
+		accData.x_Max=DEFAULT;
+		accData.x_Min=DEFAULT;
+		accData.y_Max=DEFAULT;
+		accData.y_Min=DEFAULT;
+		accData.z_Max=DEFAULT;
+		accData.z_Min=DEFAULT;
 }
 
 MMA8451Q::~MMA8451Q() { }
 
-void MMA8451Q::readRegs(int addr, uint8_t * data, int len) 
-{
-    char t[1] = {addr};
-    m_i2c.write(m_addr, t, 1, true);
-    m_i2c.read(m_addr, (char *)data, len);
+uint8_t MMA8451Q::getWhoAmI() {
+    uint8_t who_am_i = 0;
+    readRegs(REG_WHO_AM_I, &who_am_i, 1);
+    return who_am_i;
 }
 
-void MMA8451Q::writeRegs(uint8_t * data, int len) 
-{
-    m_i2c.write(m_addr, (char *)data, len);
+float MMA8451Q::getAccX() {
+    return (float(getAccAxis(REG_OUT_X_MSB))/4096.0);
 }
 
-int16_t MMA8451Q::getRawData(uint8_t addr)
-{
-    int16_t value ;
-    uint8_t data[2] ;
-    readRegs(addr, data, 2) ;
-    value = ((int16_t)((data[0] << 8) | data[1])) >> 2 ;
-    return( value ) ;
+float MMA8451Q::getAccY() {
+    return (float(getAccAxis(REG_OUT_Y_MSB))/4096.0);
 }
 
-int16_t MMA8451Q::getRawX(void) 
-{
-    int16_t value ;
-    value = getRawData(REG_OUT_X_MSB) ;
-		//value  = (value <<8) + getRawData(REG_OUT_X_LSB);
-    return( value ) ;
+float MMA8451Q::getAccZ() {
+    return (float(getAccAxis(REG_OUT_Z_MSB))/4096.0);
 }
 
-int16_t MMA8451Q::getRawY(void) 
-{
-    int16_t value ;
-		value = getRawData(REG_OUT_Y_MSB) ;
-		//value  = (value <<8) + getRawData(REG_OUT_Y_LSB);
-    return( value ) ;
-}
-
-int16_t MMA8451Q::getRawZ(void) 
-{
-    int16_t value ;
-    value = getRawData(REG_OUT_Z_MSB) ;
-		//value  = (value <<8) + getRawData(REG_OUT_Z_LSB);
-    return( value ) ;
-}
-  
-float MMA8451Q::getAccX(void)
-{
-    return(((float)getRawX())/4096.0) ;
-}
-
-float MMA8451Q::getAccY(void) 
-{
-    return(((float)getRawY())/4096.0) ;
-}
-
-float MMA8451Q::getAccZ(void) 
-{
-    return(((float)getRawZ())/4096.0) ;
-}
-
-AccelerometerData MMA8451Q::getData(void){
-	int16_t value ;
-	uint8_t data[6] ;
-	readRegs(REG_OUT_X_MSB, data, 6) ;
-	accData.x = ((float)(((int16_t)((data[0] << 6) | data[1])) >> 2)/4096) ;
-	accData.y = ((float)(((int16_t)((data[2] << 6) | data[3])) >> 2)/4096) ;
-	accData.z = ((float)(((int16_t)((data[4] << 6) | data[5])) >> 2)/4096) ;
+AccelerometerData MMA8451Q::getAccAllAxis(void) {
+    accData.x = getAccX();
+    accData.y = getAccY();
+    accData.z = getAccZ();
+	if(accData.x==DEFAULT){
+		accData.x_Min=accData.x;
+		accData.x_Max=accData.x;
+	}
+	if(accData.y==DEFAULT){
+		accData.y_Min=accData.y;
+		accData.y_Max=accData.y;
+	}
+	if(accData.z==DEFAULT){
+		accData.z_Min=accData.z;
+		accData.z_Max=accData.z;
+	}
 	
 	if(accData.x>accData.x_Max)
 		accData.x_Max=accData.x;
@@ -160,78 +129,27 @@ AccelerometerData MMA8451Q::getData(void){
 	if(accData.z<accData.z_Min)
 		accData.z_Min=accData.z;
 	
-		return accData;
+	return accData;
 }
 
-void MMA8451Q::setSingleTap(void){
-		uint8_t data0[2] = {0x2A,0x08}; //400 Hz, Standby Mode. DR2=0 DR1=0 DR0=0 CTRL_REG1
-		writeRegs(data0,2);
-	
-		uint8_t data1[2] = {0x21,0x15};//PULSE_CFG REGISTER 0x15 enables XSPEFE YSPEFE ZSPEFE (enables single pulse event for X, Y & Z)
-		writeRegs(data1,2);
-		
-		uint8_t data2[2] = {0x23,0x10};//Threshold for X axis PULSE_THSX REGISTER
-		writeRegs(data2,2);
-		
-		uint8_t data3[2] = {0x24,0x10};//Threshold for Y axis PULSE_THSY REGISTER
-		writeRegs(data3,2);
-		
-		uint8_t data4[2] = {0x25,0x10};//Threshold for Z axis PULSE_THSZ REGISTER
-		writeRegs(data4,2);
-		
-		uint8_t data5[2] = {0x26,0x50};//PULSE_TMLT (50ms)number of steps (time step depens on ODR frequency and power mode. FF_MT_COUNT Table 51.
-		writeRegs(data5,2);
-		
-		uint8_t data6[2] = {0x27,0xF0};//PULSE_LTCY REGISTER 0xF0 VALUE FOR 300ms
-		writeRegs(data6,2);
-		
-		uint8_t data7[2] = {0x2D,0x08};//CTRL_REG4 INT_EN_PULSE enabled to detect interrupts 
-		writeRegs(data7,2);
-		
-		uint8_t data8[2] = {0x2E,0x08};//CTRL_REG5 INT_CFG_PULSE to 1 to route the interrupt to INT1 pint
-		writeRegs(data8,2);
-		
-		uint8_t data9[2] ;
-    readRegs(0x2A, data9, 2) ;
-		data9[1]|=0x01;
-		data9[0] = 0x2A;
-		writeRegs(data9,2);
+int16_t MMA8451Q::getAccAxis(uint8_t addr) {
+    int16_t acc;
+    uint8_t res[2];
+    readRegs(addr, res, 2);
+
+    acc = (res[0] << 6) | (res[1] >> 2);
+    if (acc > UINT14_MAX/2)
+        acc -= UINT14_MAX;
+
+    return acc;
 }
 
-void MMA8451Q::setDobleTap(void){// 0x0F HP_FILTER_CUTOFF Pulse_LPF_EN default = 0; power mode
-		uint8_t data0[2] = {0x2A,0x08};//400 Hz, Standby Mode. DR2=0 DR1=0 DR0=0 CTRL_REG1
-		writeRegs(data0,2);
-	
-		uint8_t data1[2] = {0x21,0x2A};////PULSE_CFG REGISTER 0x2A enables XSPEFE YSPEFE ZSPEFE (enables doble pulse event for X, Y & Z)
-		writeRegs(data1,2);
-		
-		uint8_t data2[2] = {0x23,0x10};//Threshold for X axis PULSE_THSX REGISTER
-		writeRegs(data2,2);
-		
-		uint8_t data3[2] = {0x24,0x10};//Threshold for Y axis PULSE_THSY REGISTER
-		writeRegs(data3,2);
-		
-		uint8_t data4[2] = {0x25,0x10};//Threshold for Z axis PULSE_THSZ REGISTER
-		writeRegs(data4,2);
-		
-		uint8_t data5[2] = {0x26,0x30};//PULSE_TMLT number of steps (time step depens on ODR frequency and power mode. FF_MT_COUNT Table 51.
-		writeRegs(data5,2);
-		
-		uint8_t data6[2] = {0x27,0x50};//PULSE_LTCY REGISTER 0xF0 VALUE FOR 300ms
-		writeRegs(data6,2);
-		
-		uint8_t data7[2] = {0x28,0x78};//PULSE_WIND 
-		writeRegs(data7,2);
-		
-		uint8_t data8[2] = {0x2D,0x08};//CTRL_REG4 INT_EN_PULSE enabled to detect interrupts 
-		writeRegs(data8,2);
-		
-		uint8_t data9[2] = {0x2E,0x08};//CTRL_REG5 INT_CFG_PULSE to 1 to route the interrupt to INT1 pint
-		writeRegs(data9,2);
-		
-		uint8_t data10[2] ;
-    readRegs(0x2A, data10, 2) ;
-		data10[1]|=0x01;
-		data10[0] = 0x2A;
-		writeRegs(data10,2);
+void MMA8451Q::readRegs(int addr, uint8_t * data, int len) {
+    char t[1] = {addr};
+    m_i2c.write(m_addr, t, 1, true);
+    m_i2c.read(m_addr, (char *)data, len);
+}
+
+void MMA8451Q::writeRegs(uint8_t * data, int len) {
+    m_i2c.write(m_addr, (char *)data, len);
 }

@@ -34,24 +34,49 @@ public:
   */
   ~MMA8451Q();
   
-  int16_t getRawData(uint8_t addr) ;
-  int16_t getRawX(void) ;
-  int16_t getRawY(void) ;
-  int16_t getRawZ(void) ;
-  
-  float getAccX(void) ;
-  float getAccY(void) ;
-  float getAccZ(void) ;
-  
-	AccelerometerData getData(void);
-	void setSingleTap(void);
-	void setDobleTap(void);
+  /**
+   * Get the value of the WHO_AM_I register
+   *
+   * @returns WHO_AM_I value
+   */
+  uint8_t getWhoAmI();
+
+  /**
+   * Get X axis acceleration
+   *
+   * @returns X axis acceleration
+   */
+  float getAccX();
+
+  /**
+   * Get Y axis acceleration
+   *
+   * @returns Y axis acceleration
+   */
+  float getAccY();
+
+  /**
+   * Get Z axis acceleration
+   *
+   * @returns Z axis acceleration
+   */
+  float getAccZ();
+
+  /**
+   * Get XYZ axis acceleration
+   *
+   * @param res array where acceleration data will be stored
+   */
+  AccelerometerData getAccAllAxis(void);
+
 private:
   I2C m_i2c;
   int m_addr;
 	AccelerometerData accData;
-	void readRegs(int addr, uint8_t * data, int len);
+  void readRegs(int addr, uint8_t * data, int len);
   void writeRegs(uint8_t * data, int len);
-} ;
+  int16_t getAccAxis(uint8_t addr);
+
+};
 
 #endif /* _MMA8451Q_H_ */

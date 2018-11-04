@@ -30,7 +30,7 @@ void I2C_thread() {
 		}
 		while (true) {
 			colorData = tcs->readRegisters();
-			accData = acc->getData();
+			accData = acc->getAccAllAxis();
 			wait(0.5);
     }
 }
