@@ -73,6 +73,7 @@ private:
   I2C m_i2c;
   int m_addr;
 	AccelerometerData accData;
+	int count;
   void readRegs(int addr, uint8_t * data, int len);
   void writeRegs(uint8_t * data, int len);
   int16_t getAccAxis(uint8_t addr);

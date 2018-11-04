@@ -77,6 +77,7 @@ MMA8451Q::MMA8451Q(PinName sda, PinName scl, int addr) : m_i2c(sda, scl), m_addr
 		accData.y_Min=DEFAULT;
 		accData.z_Max=DEFAULT;
 		accData.z_Min=DEFAULT;
+		count=0;
 }
 
 MMA8451Q::~MMA8451Q() { }
@@ -100,6 +101,15 @@ float MMA8451Q::getAccZ() {
 }
 
 AccelerometerData MMA8451Q::getAccAllAxis(void) {
+	if(count==120){
+		accData.x_Max=DEFAULT;
+		accData.x_Min=DEFAULT;
+		accData.y_Max=DEFAULT;
+		accData.y_Min=DEFAULT;
+		accData.z_Max=DEFAULT;
+		accData.z_Min=DEFAULT;
+		count=0;
+	}
     accData.x = getAccX();
     accData.y = getAccY();
     accData.z = getAccZ();
@@ -129,6 +139,7 @@ AccelerometerData MMA8451Q::getAccAllAxis(void) {
 	if(accData.z<accData.z_Min)
 		accData.z_Min=accData.z;
 	
+	count++;
 	return accData;
 }
 

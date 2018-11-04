@@ -77,6 +77,19 @@ AmbientData Si7021::measure(void){
 }
 
 void Si7021::addReg (float hum, float tmp){
+	if(count==120){
+		ambData.humidity=0;
+		ambData.maxHumidity=DEFAULT;
+		ambData.minHumidity=DEFAULT;
+		ambData.meanHumidity=0;
+		ambData.temperature=0;
+		ambData.maxTemperature=DEFAULT;	
+		ambData.minTemperature=DEFAULT;
+		ambData.meanTemperature=0;
+		accHum=0;
+		accTmp=0;
+		count=0;
+	}
 	accHum+=hum;
 	accTmp+=tmp;
 	count++;

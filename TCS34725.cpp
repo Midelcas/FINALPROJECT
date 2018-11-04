@@ -42,6 +42,8 @@ TCS34725::TCS34725(PinName sda, PinName scl, int addr, PinName led) : m_i2c(sda,
 	color.acc_green=0;
 	color.acc_blue=0;
 	color.dominant=0;
+	color.hourDominant="";
+	count=0;
 }
 
 TCS34725::~TCS34725() { }
@@ -84,6 +86,12 @@ ColorData TCS34725::readRegisters(void){
 }
 
 void TCS34725::dominantColor(){
+	if(count==120){
+		color.acc_red=0;
+		color.acc_green=0;
+		color.acc_blue=0;
+		count=0;
+	}
 	if(color.red_value>color.green_value){
 		if(color.red_value>color.blue_value){
 			color.acc_red++;
@@ -99,4 +107,18 @@ void TCS34725::dominantColor(){
 		color.acc_blue++;
 		color.dominant=BLUE;
 	}
+	
+	if(color.acc_blue>color.acc_red){
+		if(color.acc_blue>color.acc_green){
+			color.hourDominant="Blue";
+		}else{
+			color.hourDominant="Green";
+		}
+	}else if(color.acc_red>color.acc_green){
+		color.hourDominant="Red";
+	}else{
+		color.hourDominant="Green";
+	}
+	
+	count++;
 }

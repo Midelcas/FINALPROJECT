@@ -5,6 +5,7 @@
 #define _TCS34725_H_
 
 #include "mbed.h"
+#include <string>
 
 typedef struct{
 	int clear_value;
@@ -15,6 +16,7 @@ typedef struct{
 	int acc_green;
 	int acc_blue;
 	int dominant;
+	string hourDominant;
 }ColorData;
 
 class TCS34725 {
@@ -42,6 +44,7 @@ private:
 	DigitalOut LED;
 	ColorData color;
 	void dominantColor();
+	int count;
 } ;
 
 #endif /* _TCS34725_H_ */
