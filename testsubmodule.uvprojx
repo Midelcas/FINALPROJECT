@@ -7131,6 +7131,16 @@
               <FileType>5</FileType>
               <FilePath>.\Si7021.h</FilePath>
             </File>
+            <File>
+              <FileName>HW5P-1.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\HW5P-1.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HW5P-1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\HW5P-1.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

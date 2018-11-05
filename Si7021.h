@@ -1,5 +1,5 @@
 /**
- * TCS34725 
+ * Si7021 
  */
 #ifndef _SI7021_H_
 #define _SI7021_H_
@@ -20,7 +20,7 @@ typedef struct{
 class Si7021 {
 public:
   /**
-  * TCS34725 constructor
+  * Si7021 constructor
   *
   * @param sda SDA pin
   * @param sdl SCL pin
