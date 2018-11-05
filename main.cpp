@@ -34,7 +34,8 @@ extern AccelerometerData accData;
 extern AmbientData ambData;
 extern LightData lightData;
 extern SoilData soilData;
-Timeout to;
+//Timeout to;
+Ticker tick;
 bool writeTime;
 int count;
 
@@ -43,21 +44,24 @@ void timeToWrite(void){
 	count++;
 	threadI2C.signal_set(0x1);
 	threadANALOG.signal_set(0x1);
-	if(testMode==ON){
+	/*if(testMode==ON){
 		to.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
 	}else if(normalMode==ON){
 		to.attach_us(timeToWrite,TIMEOUT_NORMAL_MODE*1000000);
-	}
+	}*/
 }
 
 void switch_handler(void){
 	testMode=!testMode;
 	normalMode=!normalMode;
+	tick.detach();
 	if(testMode==ON){
-		to.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
+		//to.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
+		tick.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
 	}else if(normalMode==ON){
 		count=0;
-		to.attach_us(timeToWrite,TIMEOUT_NORMAL_MODE*1000000);
+		//to.attach_us(timeToWrite,TIMEOUT_NORMAL_MODE*1000000);
+		tick.attach_us(timeToWrite,TIMEOUT_NORMAL_MODE*1000000);
 	}
 }
 
@@ -90,8 +94,9 @@ int main() {
 		writeTime=0;
 		testMode=ON;
 		normalMode=OFF;
-		to.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000); 
-
+	
+		//to.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000); 
+		tick.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
     threadANALOG.start(ANALOG_thread);
 		threadI2C.start(I2C_thread);
 		sw1.mode(PullUp);
