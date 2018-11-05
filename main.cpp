@@ -5,6 +5,8 @@
 #include "MMA8451Q.h"
 #include "Si7021.h"
 #include "HW5P-1.h"
+#include "SOIL.h"
+
 #define OFF 0
 #define ON 1
 #define TIMEOUT_TEST_MODE    2
@@ -31,6 +33,7 @@ extern ColorData colorData;
 extern AccelerometerData accData;
 extern AmbientData ambData;
 extern LightData lightData;
+extern SoilData soilData;
 Timeout to;
 bool writeTime;
 int count;
@@ -85,12 +88,14 @@ int main() {
 								colorData.green_value, colorData.blue_value);
 					leds = colorData.dominant;
 					pc.printf("\nLight (%f%%)\n",lightData.light);
+					pc.printf("\nSoil Moisture (%f%%)\n",soilData.soil);
 				}else if(normalMode==ON){
 					pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
 					pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
 					pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
 								colorData.green_value, colorData.blue_value);
 					pc.printf("\nLight (%f%%)\n",lightData.light);
+					pc.printf("\nSoil Moisture (%f%%)\n",soilData.soil);
 					if(count==120){
 						pc.printf("\nMaxH: (%.2f%%),MinH: (%.2f%%)\n",ambData.maxHumidity, ambData.minHumidity);
 						pc.printf("\nMaxT: (%.2fºC),MinT: (%.2fºC)\n",ambData.maxTemperature, ambData.minTemperature);
@@ -101,6 +106,7 @@ int main() {
 						pc.printf("\nDominant Color:%s\n",colorData.hourDominant.c_str());
 						
 						pc.printf("\nMax Light (%f%%), Min Light (%f%%), Mean Light (%f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
+						pc.printf("\nMax Soil Moisture(%f%%), Min Soil Moisture(%f%%), Mean Soil Moisture(%f%%\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
 						//pc.printf("\nRedTimes (%d),GreenTimes (%d),BlueTimes (%d)\n",colorData.acc_red, colorData.acc_green, colorData.acc_blue);
 					}
 					

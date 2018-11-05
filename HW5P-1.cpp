@@ -30,7 +30,7 @@ void HW5P_1::addReg (float light){
 		accLight=0;
 		count=0;
 	}
-	accLight+=accLight;
+	accLight+=lData.light;
 	count++;
 	
 	if(lData.maxLight==DEFAULT)

@@ -7141,6 +7141,16 @@
               <FileType>5</FileType>
               <FilePath>.\HW5P-1.h</FilePath>
             </File>
+            <File>
+              <FileName>SOIL.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\SOIL.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SOIL.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\SOIL.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

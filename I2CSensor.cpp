@@ -33,9 +33,9 @@ void I2C_thread() {
 			tcs->initColorSensor();
 		}
 		while (true) {
+			threadI2C.signal_wait(0x1);
 			colorData = tcs->readRegisters();
 			accData = acc->getAccAllAxis();
 			ambData = amb->measure();
-			threadI2C.signal_wait(0x1);
     }
 }
