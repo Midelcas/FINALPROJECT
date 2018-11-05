@@ -3,11 +3,6 @@
 #include "HW5P-1.h"
 #include "SOIL.h"
 
-
-//AnalogIn soilmois(PA_0); 
-
-//float valueSM=0.0;
-
 LightData lightData;
 SoilData soilData;
 Thread threadANALOG(osPriorityNormal, 512); // 1K stack size

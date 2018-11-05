@@ -11,15 +11,26 @@
 #define ON 1
 #define TIMEOUT_TEST_MODE    2
 #define TIMEOUT_NORMAL_MODE 30
+#define TEMP_MAX 	24
+#define TEMP_MIN	18
+#define HUM_MAX		45
+#define HUM_MIN		40
+#define LIGHT_MAX	70
+#define LIGHT_MIN	40
+#define SOIL_MAX	60
+#define SOIL_MIN	40
+#define COLOR_MAX	
+#define COLOR_MIN
+#define ACC_MAX
+#define ACC_MIN
 
-void setLed();	
 
 Serial pc(USBTX,USBRX,9600);
-
 BusOut leds(PH_0, PH_1, PB_13);
 InterruptIn sw1(PB_2);
 DigitalOut testMode(LED1);
 DigitalOut normalMode(LED2);
+Ticker tick;
 
 extern Thread threadANALOG;
 extern void ANALOG_thread();
@@ -27,15 +38,14 @@ extern void ANALOG_thread();
 extern Thread threadI2C;
 extern void I2C_thread();
 
-extern float valueSM;
 
 extern ColorData colorData;
 extern AccelerometerData accData;
 extern AmbientData ambData;
 extern LightData lightData;
 extern SoilData soilData;
-//Timeout to;
-Ticker tick;
+
+
 bool writeTime;
 int count;
 
@@ -44,11 +54,6 @@ void timeToWrite(void){
 	count++;
 	threadI2C.signal_set(0x1);
 	threadANALOG.signal_set(0x1);
-	/*if(testMode==ON){
-		to.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
-	}else if(normalMode==ON){
-		to.attach_us(timeToWrite,TIMEOUT_NORMAL_MODE*1000000);
-	}*/
 }
 
 void switch_handler(void){
@@ -56,11 +61,9 @@ void switch_handler(void){
 	normalMode=!normalMode;
 	tick.detach();
 	if(testMode==ON){
-		//to.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
 		tick.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
 	}else if(normalMode==ON){
 		count=0;
-		//to.attach_us(timeToWrite,TIMEOUT_NORMAL_MODE*1000000);
 		tick.attach_us(timeToWrite,TIMEOUT_NORMAL_MODE*1000000);
 	}
 }
@@ -71,8 +74,8 @@ void printMeasures(){
 	pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
 				colorData.green_value, colorData.blue_value);
 	leds = colorData.dominant;
-	pc.printf("\nLight (%f%%)\n",lightData.light);
-	pc.printf("\nSoil Moisture (%f%%)\n",soilData.soil);
+	pc.printf("\nLight (%.2f%%)\n",lightData.light);
+	pc.printf("\nSoil Moisture (%.2f%%)\n",soilData.soil);
 }
 
 void printHour(){
@@ -84,8 +87,12 @@ void printHour(){
 	pc.printf("\nMinX (%f),MinY (%f),MinZ (%f)\n",accData.x_Min, accData.y_Min, accData.z_Min);
 	pc.printf("\nDominant Color:%s\n",colorData.hourDominant.c_str());
 	
-	pc.printf("\nMax Light (%f%%), Min Light (%f%%), Mean Light (%f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
-	pc.printf("\nMax Soil Moisture(%f%%), Min Soil Moisture(%f%%), Mean Soil Moisture(%f%%\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
+	pc.printf("\nMax Light (%.2f%%), Min Light (%.2f%%), Mean Light (%.2f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
+	pc.printf("\nMax Soil Moisture(%.2f%%), Min Soil Moisture(%.2f%%), Mean Soil Moisture(%.2f%%\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
+}
+
+void checkLimits(){
+	
 }
 
 // main() runs in its own thread in the OS
@@ -95,7 +102,6 @@ int main() {
 		testMode=ON;
 		normalMode=OFF;
 	
-		//to.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000); 
 		tick.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
     threadANALOG.start(ANALOG_thread);
 		threadI2C.start(I2C_thread);
@@ -115,6 +121,7 @@ int main() {
 					printMeasures();
 					if(count==120){
 						printHour();
+						count =0;
 					}
 					
 				}
