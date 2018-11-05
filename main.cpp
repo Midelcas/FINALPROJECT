@@ -61,6 +61,29 @@ void switch_handler(void){
 	}
 }
 
+void printMeasures(){
+	pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
+	pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
+	pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
+				colorData.green_value, colorData.blue_value);
+	leds = colorData.dominant;
+	pc.printf("\nLight (%f%%)\n",lightData.light);
+	pc.printf("\nSoil Moisture (%f%%)\n",soilData.soil);
+}
+
+void printHour(){
+	pc.printf("\nMaxH: (%.2f%%),MinH: (%.2f%%)\n",ambData.maxHumidity, ambData.minHumidity);
+	pc.printf("\nMaxT: (%.2fºC),MinT: (%.2fºC)\n",ambData.maxTemperature, ambData.minTemperature);
+	pc.printf("\nMeanH: (%.2f%%),MeanT: (%.2fºC)\n",ambData.meanHumidity, ambData.meanTemperature);
+	
+	pc.printf("\nMaxX (%f),MaxY (%f),MaxZ (%f)\n",accData.x_Max, accData.y_Max, accData.z_Max);
+	pc.printf("\nMinX (%f),MinY (%f),MinZ (%f)\n",accData.x_Min, accData.y_Min, accData.z_Min);
+	pc.printf("\nDominant Color:%s\n",colorData.hourDominant.c_str());
+	
+	pc.printf("\nMax Light (%f%%), Min Light (%f%%), Mean Light (%f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
+	pc.printf("\nMax Soil Moisture(%f%%), Min Soil Moisture(%f%%), Mean Soil Moisture(%f%%\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
+}
+
 // main() runs in its own thread in the OS
 int main() {
 		count=0;
@@ -82,32 +105,11 @@ int main() {
 			if(writeTime){
 				pc.printf("\n\r");
 				if(testMode==ON){
-					pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
-					pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
-					pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
-								colorData.green_value, colorData.blue_value);
-					leds = colorData.dominant;
-					pc.printf("\nLight (%f%%)\n",lightData.light);
-					pc.printf("\nSoil Moisture (%f%%)\n",soilData.soil);
+					printMeasures();
 				}else if(normalMode==ON){
-					pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
-					pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
-					pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
-								colorData.green_value, colorData.blue_value);
-					pc.printf("\nLight (%f%%)\n",lightData.light);
-					pc.printf("\nSoil Moisture (%f%%)\n",soilData.soil);
+					printMeasures();
 					if(count==120){
-						pc.printf("\nMaxH: (%.2f%%),MinH: (%.2f%%)\n",ambData.maxHumidity, ambData.minHumidity);
-						pc.printf("\nMaxT: (%.2fºC),MinT: (%.2fºC)\n",ambData.maxTemperature, ambData.minTemperature);
-						pc.printf("\nMeanH: (%.2f%%),MeanT: (%.2fºC)\n",ambData.meanHumidity, ambData.meanTemperature);
-						
-						pc.printf("\nMaxX (%f),MaxY (%f),MaxZ (%f)\n",accData.x_Max, accData.y_Max, accData.z_Max);
-						pc.printf("\nMinX (%f),MinY (%f),MinZ (%f)\n",accData.x_Min, accData.y_Min, accData.z_Min);
-						pc.printf("\nDominant Color:%s\n",colorData.hourDominant.c_str());
-						
-						pc.printf("\nMax Light (%f%%), Min Light (%f%%), Mean Light (%f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
-						pc.printf("\nMax Soil Moisture(%f%%), Min Soil Moisture(%f%%), Mean Soil Moisture(%f%%\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
-						//pc.printf("\nRedTimes (%d),GreenTimes (%d),BlueTimes (%d)\n",colorData.acc_red, colorData.acc_green, colorData.acc_blue);
+						printHour();
 					}
 					
 				}
