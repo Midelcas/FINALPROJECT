@@ -70,7 +70,7 @@ void TCS34725::initColorSensor(void){
 
 ColorData TCS34725::readRegisters(void){
 		LED = 1;
-		wait(0.2);
+		wait(0.5);
 		char color_reg[1]={COMMAND|CDATAL};
 		char color_data[8] = {0};
 		m_i2c.write(m_addr, color_reg, 1, true);

@@ -15,8 +15,8 @@ SOIL::~SOIL() { }
 
 SoilData SOIL::measure(void){
 	sData.soil=a_in;
-	
-	addReg(sData.soil*100);
+	sData.soil*=100;
+	addReg(sData.soil);
 	
 	return sData;
 }
