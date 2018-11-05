@@ -7131,6 +7131,21 @@
               <FileType>5</FileType>
               <FilePath>.\Si7021.h</FilePath>
             </File>
+            <File>
+              <FileName>SerialGPS.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\SerialGPS.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SerialGPS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\SerialGPS.h</FilePath>
+            </File>
+            <File>
+              <FileName>threadGPS.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\threadGPS.cpp</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

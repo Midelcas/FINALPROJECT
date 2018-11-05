@@ -4,10 +4,13 @@
 #include "TCS34725.h"
 #include "MMA8451Q.h"
 #include "Si7021.h"
+#include "SerialGPS.h"
 #define OFF 0
 #define ON 1
 #define TIMEOUT_TEST_MODE    2
 #define TIMEOUT_NORMAL_MODE 30
+
+
 
 void setLed();	
 
@@ -23,14 +26,18 @@ DigitalOut normalMode(LED2);
 //extern void ANALOG_thread();
 
 extern Thread threadI2C;
+extern Thread threadGPS;		//JLR
 
 extern void I2C_thread();
+extern void GPS_thread();		//JLR
 
 extern float valueSM;
 
 extern ColorData colorData;
 extern AccelerometerData accData;
 extern AmbientData ambData;
+extern StGPS B1gps;					//JLR
+
 Timeout to;
 bool writeTime;
 int count;
@@ -82,12 +89,18 @@ int main() {
 					pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
 					pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
 								colorData.green_value, colorData.blue_value);
+					pc.printf("Time: %6.0f \n", B1gps.time);					//JLR
+					pc.printf("Fix: %d, Latitude: %5.5f, Longitude: %5.5f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	//JLR
+
 					leds = colorData.dominant;
 				}else if(normalMode==ON){
 					pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
 					pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
 					pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
 								colorData.green_value, colorData.blue_value);
+					pc.printf("Time: %6.0f \n", B1gps.time);					//JLR
+					pc.printf("Fix: %d, Latitude: %5.5f, Longitude: %5.5f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	//JLR
+
 					if(count==120){
 						pc.printf("\nMaxH: (%.2f%%),MinH: (%.2f%%)\n",ambData.maxHumidity, ambData.minHumidity);
 						pc.printf("\nMaxT: (%.2fºC),MinT: (%.2fºC)\n",ambData.maxTemperature, ambData.minTemperature);
