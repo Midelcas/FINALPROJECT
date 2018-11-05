@@ -35,7 +35,9 @@ void I2C_thread() {
 		while (true) {
 			threadI2C.signal_wait(0x1);
 			colorData = tcs->readRegisters();
+			wait(0.1);
 			accData = acc->getAccAllAxis();
+			wait(0.1);
 			ambData = amb->measure();
     }
 }

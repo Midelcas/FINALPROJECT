@@ -13,17 +13,24 @@
 #define TIMEOUT_NORMAL_MODE 30
 #define TEMP_MAX 	24
 #define TEMP_MIN	18
-#define HUM_MAX		45
+#define HUM_MAX		50
 #define HUM_MIN		40
 #define LIGHT_MAX	70
 #define LIGHT_MIN	40
 #define SOIL_MAX	60
 #define SOIL_MIN	40
-#define COLOR_MAX	
-#define COLOR_MIN
-#define ACC_MAX
-#define ACC_MIN
-
+#define RED_MAX		3000
+#define RED_MIN		30
+#define GREEN_MAX	3000
+#define GREEN_MIN	30
+#define BLUE_MAX	3000
+#define BLUE_MIN	30
+#define ACC_MAX_X	1.5
+#define ACC_MIN_X	-0.5
+#define ACC_MAX_Y	1.5
+#define ACC_MIN_Y	-0.5
+#define ACC_MAX_Z	2
+#define ACC_MIN_Z	0.5
 
 Serial pc(USBTX,USBRX,9600);
 BusOut leds(PH_0, PH_1, PB_13);
@@ -67,6 +74,33 @@ void switch_handler(void){
 		tick.attach_us(timeToWrite,TIMEOUT_NORMAL_MODE*1000000);
 	}
 }
+//0 WHITE
+//1 YELLOW
+//2 PURPLE
+//3 RED
+//4 LIGHT BLUE
+//5 GREEN
+//6 BLUE
+//7 OFF
+void checkLimits(){
+	if((ambData.temperature>TEMP_MAX)||(ambData.temperature<TEMP_MIN)){
+		leds=3;//RED
+	}else if((ambData.humidity>HUM_MAX)||(ambData.humidity<HUM_MIN)){
+		leds=6;//BLUE
+	} else if((soilData.soil>SOIL_MAX)||(soilData.soil<SOIL_MIN)){
+		leds=4;//LIGHT BLUE
+	} else if((lightData.light>LIGHT_MAX)||(lightData.light<LIGHT_MIN)){
+		leds=1;//YELLOW
+	} else if((colorData.red_value>RED_MAX)||(colorData.red_value<RED_MIN)
+		||(colorData.green_value>GREEN_MAX)||(colorData.green_value<GREEN_MIN)
+		||(colorData.blue_value>BLUE_MAX)||(colorData.blue_value<BLUE_MIN)){
+		leds=5;//GREEN
+	} else if((accData.x>ACC_MAX_X)||(accData.x<ACC_MIN_X)
+		||(accData.y>ACC_MAX_Y)||(accData.y<ACC_MIN_Y)
+		||(accData.z>ACC_MAX_Z)||(accData.z<ACC_MIN_Z)){
+		leds=2;//PURPLE
+	}
+}
 
 void printMeasures(){
 	pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
@@ -79,6 +113,7 @@ void printMeasures(){
 }
 
 void printHour(){
+	checkLimits();
 	pc.printf("\nMaxH: (%.2f%%),MinH: (%.2f%%)\n",ambData.maxHumidity, ambData.minHumidity);
 	pc.printf("\nMaxT: (%.2fºC),MinT: (%.2fºC)\n",ambData.maxTemperature, ambData.minTemperature);
 	pc.printf("\nMeanH: (%.2f%%),MeanT: (%.2fºC)\n",ambData.meanHumidity, ambData.meanTemperature);
@@ -89,10 +124,6 @@ void printHour(){
 	
 	pc.printf("\nMax Light (%.2f%%), Min Light (%.2f%%), Mean Light (%.2f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
 	pc.printf("\nMax Soil Moisture(%.2f%%), Min Soil Moisture(%.2f%%), Mean Soil Moisture(%.2f%%\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
-}
-
-void checkLimits(){
-	
 }
 
 // main() runs in its own thread in the OS
