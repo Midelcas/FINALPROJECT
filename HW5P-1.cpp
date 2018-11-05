@@ -16,7 +16,7 @@ HW5P_1::~HW5P_1() { }
 LightData HW5P_1::measure(void){
 	lData.light=a_in;
 	
-	addReg(lData.light);
+	addReg(lData.light*100);
 	
 	return lData;
 }

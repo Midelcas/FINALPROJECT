@@ -39,6 +39,7 @@ void timeToWrite(void){
 	writeTime=1;
 	count++;
 	threadI2C.signal_set(0x1);
+	threadANALOG.signal_set(0x1);
 	if(testMode==ON){
 		to.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
 	}else if(normalMode==ON){
@@ -65,7 +66,7 @@ int main() {
 		normalMode=OFF;
 		to.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000); 
 
-    //threadANALOG.start(ANALOG_thread);
+    threadANALOG.start(ANALOG_thread);
 		threadI2C.start(I2C_thread);
 		sw1.mode(PullUp);
 		sw1.fall(switch_handler);
@@ -83,13 +84,13 @@ int main() {
 					pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
 								colorData.green_value, colorData.blue_value);
 					leds = colorData.dominant;
-					pc.printf("\nLight (%f)\n",lightData.light);
+					pc.printf("\nLight (%f%%)\n",lightData.light);
 				}else if(normalMode==ON){
 					pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
 					pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
 					pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
 								colorData.green_value, colorData.blue_value);
-					pc.printf("\nLight (%f)\n",lightData.light);
+					pc.printf("\nLight (%f%%)\n",lightData.light);
 					if(count==120){
 						pc.printf("\nMaxH: (%.2f%%),MinH: (%.2f%%)\n",ambData.maxHumidity, ambData.minHumidity);
 						pc.printf("\nMaxT: (%.2fºC),MinT: (%.2fºC)\n",ambData.maxTemperature, ambData.minTemperature);
@@ -99,7 +100,7 @@ int main() {
 						pc.printf("\nMinX (%f),MinY (%f),MinZ (%f)\n",accData.x_Min, accData.y_Min, accData.z_Min);
 						pc.printf("\nDominant Color:%s\n",colorData.hourDominant.c_str());
 						
-						pc.printf("\nMax Light (%f), Min Light (%f), Mean Light (%f)\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
+						pc.printf("\nMax Light (%f%%), Min Light (%f%%), Mean Light (%f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
 						//pc.printf("\nRedTimes (%d),GreenTimes (%d),BlueTimes (%d)\n",colorData.acc_red, colorData.acc_green, colorData.acc_blue);
 					}
 					

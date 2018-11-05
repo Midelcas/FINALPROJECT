@@ -17,7 +17,7 @@ void ANALOG_thread() {
 	lightSensor=new HW5P_1(PA_4);
 	while (true) {
 				lightData=lightSensor->measure();
-				wait(0.1);
+				threadANALOG.signal_wait(0x1);
 				//valueSM=soilmois*100;
 				  
     }
