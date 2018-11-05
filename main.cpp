@@ -57,10 +57,10 @@ bool writeTime;
 int count;
 
 void timeToWrite(void){
-	writeTime=1;
-	count++;
 	threadI2C.signal_set(0x1);
 	threadANALOG.signal_set(0x1);
+	writeTime=1;
+	count++;
 }
 
 void switch_handler(void){

@@ -23,12 +23,7 @@ LightData HW5P_1::measure(void){
 
 void HW5P_1::addReg (float light){
 	if(count==120){
-		lData.light=0;
-		lData.maxLight=DEFAULT;
-		lData.minLight=DEFAULT;
-		lData.meanLight=0;
-		accLight=0;
-		count=0;
+		reset();
 	}
 	accLight+=lData.light;
 	count++;
@@ -45,4 +40,13 @@ void HW5P_1::addReg (float light){
 	
 	lData.meanLight=(float)accLight/count;
 	
+}
+
+void HW5P_1::reset(void){
+		lData.light=0;
+		lData.maxLight=DEFAULT;
+		lData.minLight=DEFAULT;
+		lData.meanLight=0;
+		accLight=0;
+		count=0;
 }

@@ -18,7 +18,7 @@ TCS34725 *tcs=0;
 MMA8451Q *acc=0;
 Si7021 *amb=0;
 
-
+extern int count;
 
 Thread threadI2C(osPriorityNormal, 1024); // 1K stack size
 
@@ -34,6 +34,11 @@ void I2C_thread() {
 		}
 		while (true) {
 			threadI2C.signal_wait(0x1);
+			if(count==1){
+				tcs->reset();
+				acc->reset();
+				amb->reset();
+			}
 			colorData = tcs->readRegisters();
 			wait(0.1);
 			accData = acc->getAccAllAxis();

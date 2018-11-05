@@ -35,7 +35,7 @@ public:
 
 	bool check(void);
 	AmbientData measure(void);
-
+	void reset(void);
 private:
   I2C m_i2c;
   int m_addr;

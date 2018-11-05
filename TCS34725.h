@@ -38,6 +38,7 @@ public:
 	void initColorSensor(void);
 	bool checkId(void);
 	ColorData readRegisters(void);
+	void reset(void);
 private:
   I2C m_i2c;
   int m_addr;

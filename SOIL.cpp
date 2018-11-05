@@ -23,12 +23,7 @@ SoilData SOIL::measure(void){
 
 void SOIL::addReg (float light){
 	if(count==120){
-		sData.soil=0;
-		sData.maxSoil=DEFAULT;
-		sData.minSoil=DEFAULT;
-		sData.meanSoil=0;
-		accSoil=0;
-		count=0;
+		reset();
 	}
 	accSoil+=accSoil;
 	count++;
@@ -45,4 +40,13 @@ void SOIL::addReg (float light){
 	
 	sData.meanSoil=(float)accSoil/count;
 	
+}
+
+void SOIL::reset(void){
+	sData.soil=0;
+	sData.maxSoil=DEFAULT;
+	sData.minSoil=DEFAULT;
+	sData.meanSoil=0;
+	accSoil=0;
+	count=0;
 }

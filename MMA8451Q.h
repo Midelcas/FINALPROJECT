@@ -68,7 +68,7 @@ public:
    * @param res array where acceleration data will be stored
    */
   AccelerometerData getAccAllAxis(void);
-
+	void reset(void);
 private:
   I2C m_i2c;
   int m_addr;

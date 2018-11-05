@@ -102,13 +102,7 @@ float MMA8451Q::getAccZ() {
 
 AccelerometerData MMA8451Q::getAccAllAxis(void) {
 	if(count==120){
-		accData.x_Max=DEFAULT;
-		accData.x_Min=DEFAULT;
-		accData.y_Max=DEFAULT;
-		accData.y_Min=DEFAULT;
-		accData.z_Max=DEFAULT;
-		accData.z_Min=DEFAULT;
-		count=0;
+		reset();
 	}
     accData.x = getAccX();
     accData.y = getAccY();
@@ -163,4 +157,14 @@ void MMA8451Q::readRegs(int addr, uint8_t * data, int len) {
 
 void MMA8451Q::writeRegs(uint8_t * data, int len) {
     m_i2c.write(m_addr, (char *)data, len);
+}
+
+void MMA8451Q::reset(void){
+	accData.x_Max=DEFAULT;
+	accData.x_Min=DEFAULT;
+	accData.y_Max=DEFAULT;
+	accData.y_Min=DEFAULT;
+	accData.z_Max=DEFAULT;
+	accData.z_Min=DEFAULT;
+	count=0;
 }

@@ -25,7 +25,7 @@ public:
   ~SOIL();
 
 	SoilData measure(void);
-
+	void reset(void);
 private:
   AnalogIn a_in;
   SoilData sData;

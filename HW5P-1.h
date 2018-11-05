@@ -25,7 +25,7 @@ public:
   ~HW5P_1();
 
 	LightData measure(void);
-
+	void reset(void);
 private:
   AnalogIn a_in;
   LightData lData;
