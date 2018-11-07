@@ -7132,6 +7132,7 @@
               <FilePath>.\Si7021.h</FilePath>
             </File>
             <File>
+<<<<<<< HEAD
               <FileName>HW5P-1.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\HW5P-1.cpp</FilePath>
@@ -7150,6 +7151,21 @@
               <FileName>SOIL.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\SOIL.h</FilePath>
+=======
+              <FileName>SerialGPS.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\SerialGPS.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SerialGPS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\SerialGPS.h</FilePath>
+            </File>
+            <File>
+              <FileName>threadGPS.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\threadGPS.cpp</FilePath>
+>>>>>>> gps
             </File>
           </Files>
         </Group>

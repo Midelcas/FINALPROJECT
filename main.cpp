@@ -6,6 +6,7 @@
 #include "Si7021.h"
 #include "HW5P-1.h"
 #include "SOIL.h"
+#include "SerialGPS.h"
 
 #define OFF 0
 #define ON 1
@@ -44,6 +45,7 @@ extern void ANALOG_thread();
 
 extern Thread threadI2C;
 extern void I2C_thread();
+extern void GPS_thread();		//JLR
 
 
 extern ColorData colorData;
@@ -103,20 +105,22 @@ void checkLimits(){
 }
 
 void printMeasures(){
-	pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
+	pc.printf("\nTemp: (%.2fï¿½C),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
 	pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
 	pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
 				colorData.green_value, colorData.blue_value);
 	leds = colorData.dominant;
 	pc.printf("\nLight (%.2f%%)\n",lightData.light);
 	pc.printf("\nSoil Moisture (%.2f%%)\n",soilData.soil);
+	pc.printf("Time: %6.0f \n", B1gps.time);					//JLR
+	pc.printf("Fix: %d, Latitude: %5.5f, Longitude: %5.5f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	//JLR
 }
 
 void printHour(){
 	checkLimits();
 	pc.printf("\nMaxH: (%.2f%%),MinH: (%.2f%%)\n",ambData.maxHumidity, ambData.minHumidity);
-	pc.printf("\nMaxT: (%.2fºC),MinT: (%.2fºC)\n",ambData.maxTemperature, ambData.minTemperature);
-	pc.printf("\nMeanH: (%.2f%%),MeanT: (%.2fºC)\n",ambData.meanHumidity, ambData.meanTemperature);
+	pc.printf("\nMaxT: (%.2fï¿½C),MinT: (%.2fï¿½C)\n",ambData.maxTemperature, ambData.minTemperature);
+	pc.printf("\nMeanH: (%.2f%%),MeanT: (%.2fï¿½C)\n",ambData.meanHumidity, ambData.meanTemperature);
 	
 	pc.printf("\nMaxX (%f),MaxY (%f),MaxZ (%f)\n",accData.x_Max, accData.y_Max, accData.z_Max);
 	pc.printf("\nMinX (%f),MinY (%f),MinZ (%f)\n",accData.x_Min, accData.y_Min, accData.z_Min);
@@ -124,6 +128,8 @@ void printHour(){
 	
 	pc.printf("\nMax Light (%.2f%%), Min Light (%.2f%%), Mean Light (%.2f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
 	pc.printf("\nMax Soil Moisture(%.2f%%), Min Soil Moisture(%.2f%%), Mean Soil Moisture(%.2f%%\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
+	pc.printf("Time: %6.0f \n", B1gps.time);					//JLR
+	pc.printf("Fix: %d, Latitude: %5.5f, Longitude: %5.5f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	//JLR
 }
 
 // main() runs in its own thread in the OS

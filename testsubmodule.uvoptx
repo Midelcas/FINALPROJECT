@@ -16448,8 +16448,13 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
+<<<<<<< HEAD
       <PathWithFileName>.\HW5P-1.cpp</PathWithFileName>
       <FilenameWithoutPath>HW5P-1.cpp</FilenameWithoutPath>
+=======
+      <PathWithFileName>.\SerialGPS.cpp</PathWithFileName>
+      <FilenameWithoutPath>SerialGPS.cpp</FilenameWithoutPath>
+>>>>>>> gps
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -16460,8 +16465,13 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
+<<<<<<< HEAD
       <PathWithFileName>.\HW5P-1.h</PathWithFileName>
       <FilenameWithoutPath>HW5P-1.h</FilenameWithoutPath>
+=======
+      <PathWithFileName>.\SerialGPS.h</PathWithFileName>
+      <FilenameWithoutPath>SerialGPS.h</FilenameWithoutPath>
+>>>>>>> gps
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -16472,6 +16482,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
+<<<<<<< HEAD
       <PathWithFileName>.\SOIL.cpp</PathWithFileName>
       <FilenameWithoutPath>SOIL.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -16486,6 +16497,10 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\SOIL.h</PathWithFileName>
       <FilenameWithoutPath>SOIL.h</FilenameWithoutPath>
+=======
+      <PathWithFileName>.\threadGPS.cpp</PathWithFileName>
+      <FilenameWithoutPath>threadGPS.cpp</FilenameWithoutPath>
+>>>>>>> gps
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
