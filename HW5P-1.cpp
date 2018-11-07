@@ -22,9 +22,9 @@ LightData HW5P_1::measure(void){
 }
 
 void HW5P_1::addReg (float light){
-	if(count==120){
+	/*if(count==120){
 		reset();
-	}
+	}*/
 	accLight+=lData.light;
 	count++;
 	

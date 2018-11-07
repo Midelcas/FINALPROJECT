@@ -32,6 +32,14 @@
 #define ACC_MIN_Y	-0.5
 #define ACC_MAX_Z	2
 #define ACC_MIN_Z	0.5
+#define WHITE				0
+#define YELLOW			1
+#define PURPLE			2
+#define RED					3
+#define LIGHTBLUE		4
+#define GREEN				5
+#define BLUE				6
+#define LEDOFF			7
 
 Serial pc(USBTX,USBRX,9600);
 BusOut leds(PH_0, PH_1, PB_13);
@@ -47,7 +55,7 @@ extern Thread threadI2C;
 extern void I2C_thread();
 
 extern Thread threadGPS;
-extern void GPS_thread();		//JLR
+extern void GPS_thread();		
 
 
 extern ColorData colorData;
@@ -60,12 +68,16 @@ extern GPSData B1gps;
 bool writeTime;
 int count;
 
-void timeToWrite(void){
+void measure(){
 	threadI2C.signal_set(0x1);
 	threadANALOG.signal_set(0x1);
 	wait(1);
 	threadGPS.signal_set(0x2);
-	writeTime=1;
+}
+
+void timeToWrite(void){
+	measure();
+	writeTime=true;
 	count++;
 }
 
@@ -80,31 +92,24 @@ void switch_handler(void){
 		tick.attach_us(timeToWrite,TIMEOUT_NORMAL_MODE*1000000);
 	}
 }
-//0 WHITE
-//1 YELLOW
-//2 PURPLE
-//3 RED
-//4 LIGHT BLUE
-//5 GREEN
-//6 BLUE
-//7 OFF
+
 void checkLimits(){
 	if((ambData.temperature>TEMP_MAX)||(ambData.temperature<TEMP_MIN)){
-		leds=3;//RED
+		leds=RED;
 	}else if((ambData.humidity>HUM_MAX)||(ambData.humidity<HUM_MIN)){
-		leds=6;//BLUE
+		leds=BLUE;
 	} else if((soilData.soil>SOIL_MAX)||(soilData.soil<SOIL_MIN)){
-		leds=4;//LIGHT BLUE
+		leds=LIGHTBLUE;
 	} else if((lightData.light>LIGHT_MAX)||(lightData.light<LIGHT_MIN)){
-		leds=1;//YELLOW
+		leds=YELLOW;
 	} else if((colorData.red_value>RED_MAX)||(colorData.red_value<RED_MIN)
 		||(colorData.green_value>GREEN_MAX)||(colorData.green_value<GREEN_MIN)
 		||(colorData.blue_value>BLUE_MAX)||(colorData.blue_value<BLUE_MIN)){
-		leds=5;//GREEN
+		leds=GREEN;
 	} else if((accData.x>ACC_MAX_X)||(accData.x<ACC_MIN_X)
 		||(accData.y>ACC_MAX_Y)||(accData.y<ACC_MIN_Y)
 		||(accData.z>ACC_MAX_Z)||(accData.z<ACC_MIN_Z)){
-		leds=2;//PURPLE
+		leds=PURPLE;
 	}
 }
 
@@ -113,15 +118,14 @@ void printMeasures(){
 	pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
 	pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
 				colorData.green_value, colorData.blue_value);
-	leds = colorData.dominant;
 	pc.printf("\nLight (%.2f%%)\n",lightData.light);
 	pc.printf("\nSoil Moisture (%.2f%%)\n",soilData.soil);
 	pc.printf("Time: %02d:%02d:%02.3f \n", B1gps.h, B1gps.m, B1gps.s);
+	pc.printf("Time: %f \n", B1gps.time);
 	pc.printf("Fix: %d, Latitude: %f, Longitude: %f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	
 }
 
 void printHour(){
-	checkLimits();
 	pc.printf("\nMaxH: (%.2f%%),MinH: (%.2f%%)\n",ambData.maxHumidity, ambData.minHumidity);
 	pc.printf("\nMaxT: (%.2fºC),MinT: (%.2fºC)\n",ambData.maxTemperature, ambData.minTemperature);
 	pc.printf("\nMeanH: (%.2f%%),MeanT: (%.2fºC)\n",ambData.meanHumidity, ambData.meanTemperature);
@@ -131,18 +135,17 @@ void printHour(){
 	pc.printf("\nDominant Color:%s\n",colorData.hourDominant.c_str());
 	
 	pc.printf("\nMax Light (%.2f%%), Min Light (%.2f%%), Mean Light (%.2f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
-	pc.printf("\nMax Soil Moisture(%.2f%%), Min Soil Moisture(%.2f%%), Mean Soil Moisture(%.2f%%\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
+	pc.printf("\nMax Soil Moisture(%.2f%%), Min Soil Moisture(%.2f%%), Mean Soil Moisture(%.2f%%)\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
 	pc.printf("Time: %02d:%02d:%02.3f \n", B1gps.h, B1gps.m, B1gps.s);
 	pc.printf("Fix: %d, Latitude: %5.5f, Longitude: %5.5f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	
 }
 
-// main() runs in its own thread in the OS
 int main() {
 		count=0;
 		writeTime=0;
 		testMode=ON;
 		normalMode=OFF;
-	
+		leds=LEDOFF;
 		tick.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
     threadANALOG.start(ANALOG_thread);
 		threadI2C.start(I2C_thread);
@@ -159,15 +162,16 @@ int main() {
 				pc.printf("\n\r");
 				if(testMode==ON){
 					printMeasures();
+					leds = colorData.dominant;
 				}else if(normalMode==ON){
 					printMeasures();
+					checkLimits();
 					if(count==120){
 						printHour();
 						count =0;
 					}
-					
 				}
-				writeTime=0;
+				writeTime=false;
 			}		
 			wait(.1);
 			

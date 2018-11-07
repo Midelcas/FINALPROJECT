@@ -77,9 +77,9 @@ AmbientData Si7021::measure(void){
 }
 
 void Si7021::addReg (float hum, float tmp){
-	if(count==120){
+	/*if(count==120){
 		reset();
-	}
+	}*/
 	accHum+=hum;
 	accTmp+=tmp;
 	count++;

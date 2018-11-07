@@ -86,9 +86,9 @@ ColorData TCS34725::readRegisters(void){
 }
 
 void TCS34725::dominantColor(){
-	if(count==120){
+	/*if(count==120){
 		reset();
-	}
+	}*/
 	if(color.red_value>color.green_value){
 		if(color.red_value>color.blue_value){
 			color.acc_red++;

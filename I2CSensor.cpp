@@ -4,12 +4,9 @@
 #include "TCS34725.h"
 #include "MMA8451Q.h"
 #include "Si7021.h"
-
-
-
-int tcsAddr = 41 << 1;
-int mmaAddr = 0x1D;
-int si7Addr = 0x40 << 1;
+#define TCS_ADDR 0x52
+#define MMA_ADDR 0x1D
+#define SI7_ADDR 0x50
 
 ColorData colorData;
 AccelerometerData accData;
@@ -25,16 +22,15 @@ Thread threadI2C(osPriorityNormal, 1024); // 1K stack size
 void I2C_thread();
 
 void I2C_thread() {
-		tcs = new TCS34725(PB_9,PB_8,tcsAddr, PB_14);
-		acc = new MMA8451Q(PB_9,PB_8,mmaAddr);
-		amb = new Si7021(PB_9,PB_8,si7Addr);
+		tcs = new TCS34725(PB_9,PB_8,TCS_ADDR, PB_14);
+		acc = new MMA8451Q(PB_9,PB_8,MMA_ADDR);
+		amb = new Si7021(PB_9,PB_8,SI7_ADDR);
 	
 		if(tcs->checkId()){
 			tcs->initColorSensor();
 		}
 		while (true) {
-			threadI2C.signal_wait(0x1);
-			if(count==1){
+			if(count==0){
 				tcs->reset();
 				acc->reset();
 				amb->reset();
@@ -44,5 +40,7 @@ void I2C_thread() {
 			accData = acc->getAccAllAxis();
 			wait(0.1);
 			ambData = amb->measure();
+			threadI2C.signal_wait(0x1);
     }
+		
 }
