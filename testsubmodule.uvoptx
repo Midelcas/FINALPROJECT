@@ -148,32 +148,39 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32L0xx_192 -FS08000000 -FL030000 -FP0($$Device:STM32L072CZ$CMSIS\Flash\STM32L0xx_192.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>38</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134248564</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\I2CSensor.cpp</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\testsubmodule\I2CSensor.cpp\38</Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>clear_value</ItemText>
+          <ItemText>B1gps.latitude</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>blue_value</ItemText>
+          <ItemText>mins</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>((int)color_data[1]&lt;&lt;8) | color_data[0],0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>((int)color_data[3] &lt;&lt; 8) | color_data[2],0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>accHum</ItemText>
+          <ItemText>degs</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -16448,13 +16455,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>.\HW5P-1.cpp</PathWithFileName>
       <FilenameWithoutPath>HW5P-1.cpp</FilenameWithoutPath>
-=======
-      <PathWithFileName>.\SerialGPS.cpp</PathWithFileName>
-      <FilenameWithoutPath>SerialGPS.cpp</FilenameWithoutPath>
->>>>>>> gps
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -16465,13 +16467,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>.\HW5P-1.h</PathWithFileName>
       <FilenameWithoutPath>HW5P-1.h</FilenameWithoutPath>
-=======
-      <PathWithFileName>.\SerialGPS.h</PathWithFileName>
-      <FilenameWithoutPath>SerialGPS.h</FilenameWithoutPath>
->>>>>>> gps
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -16482,7 +16479,6 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-<<<<<<< HEAD
       <PathWithFileName>.\SOIL.cpp</PathWithFileName>
       <FilenameWithoutPath>SOIL.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -16497,10 +16493,42 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\SOIL.h</PathWithFileName>
       <FilenameWithoutPath>SOIL.h</FilenameWithoutPath>
-=======
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>1354</FileNumber>
+      <FileType>8</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\SerialGPS.cpp</PathWithFileName>
+      <FilenameWithoutPath>SerialGPS.cpp</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>1355</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\SerialGPS.h</PathWithFileName>
+      <FilenameWithoutPath>SerialGPS.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>1356</FileNumber>
+      <FileType>8</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
       <PathWithFileName>.\threadGPS.cpp</PathWithFileName>
       <FilenameWithoutPath>threadGPS.cpp</FilenameWithoutPath>
->>>>>>> gps
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

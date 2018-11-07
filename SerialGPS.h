@@ -27,7 +27,7 @@
 #define MBED_GPS_H
 
 // GPS
-struct StGPS{
+typedef struct{
     float longitude;
     float latitude;
     float time;
@@ -36,7 +36,10 @@ struct StGPS{
     float alt;
     float  geoid;
 		int fix;
-};
+		int h;
+		int m;
+		float s;
+}GPSData;
 
 
 /**  A SerialGPS interface for reading from a serial GPS module */
@@ -81,12 +84,12 @@ public:
     
     /** The NMEA sentence */
     char msg[256];
-    
+    GPSData getGPSData(void);
     
 private:
     float trunc(float v);
     void getline();
-    
+    GPSData gpsData;
     Serial _gps;
 };
 

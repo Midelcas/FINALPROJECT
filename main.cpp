@@ -45,6 +45,8 @@ extern void ANALOG_thread();
 
 extern Thread threadI2C;
 extern void I2C_thread();
+
+extern Thread threadGPS;
 extern void GPS_thread();		//JLR
 
 
@@ -53,7 +55,7 @@ extern AccelerometerData accData;
 extern AmbientData ambData;
 extern LightData lightData;
 extern SoilData soilData;
-
+extern GPSData B1gps;
 
 bool writeTime;
 int count;
@@ -61,6 +63,8 @@ int count;
 void timeToWrite(void){
 	threadI2C.signal_set(0x1);
 	threadANALOG.signal_set(0x1);
+	wait(1);
+	threadGPS.signal_set(0x2);
 	writeTime=1;
 	count++;
 }
@@ -105,22 +109,22 @@ void checkLimits(){
 }
 
 void printMeasures(){
-	pc.printf("\nTemp: (%.2f�C),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
+	pc.printf("\nTemp: (%.2fºC),Hum: (%.2f%%)\n",ambData.temperature, ambData.humidity);
 	pc.printf("\nX (%f),Y (%f),Z (%f)\n",accData.x, accData.y, accData.z);
 	pc.printf("\nClear (%d)Red (%d), Green (%d), Blue (%d) \n",colorData.clear_value, colorData.red_value, 
 				colorData.green_value, colorData.blue_value);
 	leds = colorData.dominant;
 	pc.printf("\nLight (%.2f%%)\n",lightData.light);
 	pc.printf("\nSoil Moisture (%.2f%%)\n",soilData.soil);
-	pc.printf("Time: %6.0f \n", B1gps.time);					//JLR
-	pc.printf("Fix: %d, Latitude: %5.5f, Longitude: %5.5f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	//JLR
+	pc.printf("Time: %02d:%02d:%02.3f \n", B1gps.h, B1gps.m, B1gps.s);
+	pc.printf("Fix: %d, Latitude: %f, Longitude: %f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	
 }
 
 void printHour(){
 	checkLimits();
 	pc.printf("\nMaxH: (%.2f%%),MinH: (%.2f%%)\n",ambData.maxHumidity, ambData.minHumidity);
-	pc.printf("\nMaxT: (%.2f�C),MinT: (%.2f�C)\n",ambData.maxTemperature, ambData.minTemperature);
-	pc.printf("\nMeanH: (%.2f%%),MeanT: (%.2f�C)\n",ambData.meanHumidity, ambData.meanTemperature);
+	pc.printf("\nMaxT: (%.2fºC),MinT: (%.2fºC)\n",ambData.maxTemperature, ambData.minTemperature);
+	pc.printf("\nMeanH: (%.2f%%),MeanT: (%.2fºC)\n",ambData.meanHumidity, ambData.meanTemperature);
 	
 	pc.printf("\nMaxX (%f),MaxY (%f),MaxZ (%f)\n",accData.x_Max, accData.y_Max, accData.z_Max);
 	pc.printf("\nMinX (%f),MinY (%f),MinZ (%f)\n",accData.x_Min, accData.y_Min, accData.z_Min);
@@ -128,8 +132,8 @@ void printHour(){
 	
 	pc.printf("\nMax Light (%.2f%%), Min Light (%.2f%%), Mean Light (%.2f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
 	pc.printf("\nMax Soil Moisture(%.2f%%), Min Soil Moisture(%.2f%%), Mean Soil Moisture(%.2f%%\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
-	pc.printf("Time: %6.0f \n", B1gps.time);					//JLR
-	pc.printf("Fix: %d, Latitude: %5.5f, Longitude: %5.5f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	//JLR
+	pc.printf("Time: %02d:%02d:%02.3f \n", B1gps.h, B1gps.m, B1gps.s);
+	pc.printf("Fix: %d, Latitude: %5.5f, Longitude: %5.5f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	
 }
 
 // main() runs in its own thread in the OS
@@ -142,6 +146,7 @@ int main() {
 		tick.attach_us(timeToWrite,TIMEOUT_TEST_MODE*1000000);
     threadANALOG.start(ANALOG_thread);
 		threadI2C.start(I2C_thread);
+		threadGPS.start(GPS_thread);
 		sw1.mode(PullUp);
 		sw1.fall(switch_handler);
 

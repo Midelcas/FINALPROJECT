@@ -25,13 +25,14 @@
 
 SerialGPS::SerialGPS(PinName tx, PinName rx, int Baud) : _gps(tx, rx) {
     _gps.baud(Baud);    
-    longitude = 0.0;
-    latitude = 0.0;        
+    gpsData.longitude = 0.0;
+    gpsData.latitude = 0.0;
 }
 
 int SerialGPS::sample() {
     char ns, ew, unit;
     int lock;
+		gpsData.fix=0;
 
     while(1) {        
         getline();
@@ -46,7 +47,7 @@ int SerialGPS::sample() {
                 sats = 0;
                 hdop = 0.0;
                 alt = 0.0;
-                geoid = 0.0;        
+                geoid = 0.0;
                 return 0;
             } else {
                 //GPGGA format according http://aprs.gids.nl/nmea/#gga
@@ -57,16 +58,27 @@ int SerialGPS::sample() {
                 if(ns == 'S') {    latitude  *= -1.0; }
                 if(ew == 'W') {    longitude *= -1.0; }
                 
-								/*
-								float degrees = trunc(latitude / 100.0f);
-                float minutes = latitude - (degrees * 100.0f);
-                latitude = degrees + minutes / 60.0f;    
-                degrees = trunc(longitude / 100.0f * 0.01f);
-                minutes = longitude - (degrees * 100.0f);
-                longitude = degrees + minutes / 60.0f;
-								*/
 								
+								int degs=latitude/100;
+								float mins = latitude-(degs*100);
+								latitude=degs+(mins/60);
+								degs=longitude/100;
+								mins = longitude-(degs*100);
+								longitude=degs+(mins/60);
 								
+								int h=time/10000;
+								int m=(time/100)-(h*100);
+								float s=time-(h*10000)-(m*100);
+								if(h==23){
+									h=0;
+								}else{
+									h++;
+								}
+								gpsData.h=h;
+								gpsData.m=m;
+								gpsData.s=s;
+								
+								gpsData.fix=1;
                 return 1;
             }
         }
@@ -95,5 +107,16 @@ void SerialGPS::getline() {
         }
     }
     error("Overflowed message limit");
+}
+
+GPSData SerialGPS::getGPSData(void){
+	gpsData.latitude=latitude;
+	gpsData.longitude=longitude;
+	gpsData.time=time;
+	gpsData.sats=sats;
+	gpsData.hdop=hdop;
+	gpsData.geoid=geoid;
+	gpsData.alt=alt;
+	return gpsData;
 }
 
