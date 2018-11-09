@@ -68,7 +68,8 @@ int SerialGPS::sample() {
 								
 								int h=time/10000;
 								int m=(time/100)-(h*100);
-								float s=time-(h*10000)-(m*100);
+								int s=time-(h*10000)-(m*100);
+								int ms=(time-(h*10000)-(m*100)-s)*1000;
 								if(h==23){
 									h=0;
 								}else{
@@ -77,6 +78,7 @@ int SerialGPS::sample() {
 								gpsData.h=h;
 								gpsData.m=m;
 								gpsData.s=s;
+								gpsData.ms=ms;
 								
 								gpsData.fix=1;
                 return 1;

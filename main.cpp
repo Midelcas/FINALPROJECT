@@ -10,9 +10,9 @@
 
 #define OFF 0
 #define ON 1
-#define TIMEOUT_TEST_MODE    2
-#define TIMEOUT_NORMAL_MODE 30
-#define TEMP_MAX 	24
+#define TIMEOUT_TEST_MODE    	2
+#define TIMEOUT_NORMAL_MODE		4//30
+#define TEMP_MAX 	28
 #define TEMP_MIN	18
 #define HUM_MAX		50
 #define HUM_MIN		40
@@ -41,7 +41,7 @@
 #define BLUE				6
 #define LEDOFF			7
 
-Serial pc(USBTX,USBRX,9600);
+Serial pc(USBTX,USBRX,115200);
 BusOut leds(PH_0, PH_1, PB_13);
 InterruptIn sw1(PB_2);
 DigitalOut testMode(LED1);
@@ -69,14 +69,14 @@ bool writeTime;
 int count;
 
 void measure(){
-	threadI2C.signal_set(0x1);
-	threadANALOG.signal_set(0x1);
-	wait(1);
 	threadGPS.signal_set(0x2);
+	wait(1);
+	threadI2C.signal_set(0x1);
+	threadANALOG.signal_set(0x1);	
 }
 
 void timeToWrite(void){
-	measure();
+	//measure();
 	writeTime=true;
 	count++;
 }
@@ -110,6 +110,8 @@ void checkLimits(){
 		||(accData.y>ACC_MAX_Y)||(accData.y<ACC_MIN_Y)
 		||(accData.z>ACC_MAX_Z)||(accData.z<ACC_MIN_Z)){
 		leds=PURPLE;
+	}else{
+		leds=LEDOFF;
 	}
 }
 
@@ -120,8 +122,7 @@ void printMeasures(){
 				colorData.green_value, colorData.blue_value);
 	pc.printf("\nLight (%.2f%%)\n",lightData.light);
 	pc.printf("\nSoil Moisture (%.2f%%)\n",soilData.soil);
-	pc.printf("Time: %02d:%02d:%02.3f \n", B1gps.h, B1gps.m, B1gps.s);
-	pc.printf("Time: %f \n", B1gps.time);
+	pc.printf("Time: %02d:%02d:%02d.%03d \n", B1gps.h, B1gps.m, B1gps.s, B1gps.ms);
 	pc.printf("Fix: %d, Latitude: %f, Longitude: %f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	
 }
 
@@ -134,10 +135,10 @@ void printHour(){
 	pc.printf("\nMinX (%f),MinY (%f),MinZ (%f)\n",accData.x_Min, accData.y_Min, accData.z_Min);
 	pc.printf("\nDominant Color:%s\n",colorData.hourDominant.c_str());
 	
-	pc.printf("\nMax Light (%.2f%%), Min Light (%.2f%%), Mean Light (%.2f%%\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
+	pc.printf("\nMax Light (%.2f%%), Min Light (%.2f%%), Mean Light (%.2f%%)\n",lightData.maxLight, lightData.minLight, lightData.meanLight);
 	pc.printf("\nMax Soil Moisture(%.2f%%), Min Soil Moisture(%.2f%%), Mean Soil Moisture(%.2f%%)\n",soilData.maxSoil, soilData.minSoil, soilData.meanSoil);
-	pc.printf("Time: %02d:%02d:%02.3f \n", B1gps.h, B1gps.m, B1gps.s);
-	pc.printf("Fix: %d, Latitude: %5.5f, Longitude: %5.5f \n", B1gps.fix, B1gps.latitude, B1gps.longitude);	
+	pc.printf("Time: %02d:%02d:%02d.%03d \n", B1gps.h, B1gps.m, B1gps.s, B1gps.ms);
+	pc.printf("Latitude: %5.5f, Longitude: %5.5f \n", B1gps.latitude, B1gps.longitude);	
 }
 
 int main() {
@@ -162,11 +163,13 @@ int main() {
 				pc.printf("\n\r");
 				if(testMode==ON){
 					printMeasures();
+					measure();
 					leds = colorData.dominant;
 				}else if(normalMode==ON){
 					printMeasures();
+					measure();
 					checkLimits();
-					if(count==120){
+					if(count==10){
 						printHour();
 						count =0;
 					}

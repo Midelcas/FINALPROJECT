@@ -101,9 +101,9 @@ float MMA8451Q::getAccZ() {
 }
 
 AccelerometerData MMA8451Q::getAccAllAxis(void) {
-	/*if(count==120){
+	if(count==120){
 		reset();
-	}*/
+	}
     accData.x = getAccX();
     accData.y = getAccY();
     accData.z = getAccZ();

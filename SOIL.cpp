@@ -22,10 +22,10 @@ SoilData SOIL::measure(void){
 }
 
 void SOIL::addReg (float light){
-	/*if(count==120){
+	if(count==120){
 		reset();
-	}*/
-	accSoil+=accSoil;
+	}
+	accSoil+=sData.soil;
 	count++;
 	
 	if(sData.maxSoil==DEFAULT)

@@ -16,10 +16,10 @@ void ANALOG_thread() {
 	lightSensor=new HW5P_1(PA_4);
 	soilSensor=new SOIL(PA_0);
 	while (true) {
-		if(count ==0){
+		/*if(count ==0){
 			soilSensor->reset();
 			lightSensor->reset();
-		}
+		}*/
 		soilData=soilSensor->measure();
 		lightData=lightSensor->measure();
 		threadANALOG.signal_wait(0x1);		

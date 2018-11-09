@@ -30,11 +30,11 @@ void I2C_thread() {
 			tcs->initColorSensor();
 		}
 		while (true) {
-			if(count==0){
+			/*if(count==0){
 				tcs->reset();
 				acc->reset();
 				amb->reset();
-			}
+			}*/
 			colorData = tcs->readRegisters();
 			wait(0.1);
 			accData = acc->getAccAllAxis();

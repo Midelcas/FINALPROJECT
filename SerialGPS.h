@@ -38,7 +38,8 @@ typedef struct{
 		int fix;
 		int h;
 		int m;
-		float s;
+		int s;
+		int ms;
 }GPSData;
 
 
