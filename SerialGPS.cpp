@@ -48,6 +48,7 @@ int SerialGPS::sample() {
                 hdop = 0.0;
                 alt = 0.0;
                 geoid = 0.0;
+								gpsData.fix=0;
                 return 0;
             } else {
                 //GPGGA format according http://aprs.gids.nl/nmea/#gga
